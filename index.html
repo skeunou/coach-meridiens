@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LV · Les Méridiens — MTC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fafaf8; --surf:#ffffff; --surf2:#f0efe9; --bdr:rgba(0,0,0,0.12);
+  --acc:#3c34b9; --acc2:#993c1d; --warn:#854f0b; --txt:#1a1a18;
+  --mut:#5a5a55; --grn:#0f6e56; --red:#b3261e; --purp:#6d3bbf; --blue:#2b6cb0;
+  --jade:#0f6e56;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.bebas{font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:1px}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:2px solid var(--acc);padding:14px 18px;display:flex;align-items:center;gap:12px}
+header .logo{font-family:'Bebas Neue';font-size:30px;letter-spacing:2px;line-height:1}
+header .logo .sub{display:block;font-family:'DM Sans';font-size:10px;letter-spacing:2px;color:var(--mut);font-weight:500;text-transform:uppercase}
+header .accentbar{width:5px;height:38px;background:var(--jade);border-radius:3px}
+.backbtn{margin-left:auto;background:var(--surf2);border:1px solid var(--bdr);color:var(--txt);font-family:'DM Sans';font-size:13px;padding:7px 12px;border-radius:8px;cursor:pointer;display:none}
+.backbtn:active{background:var(--bdr)}
+
+.wrap{max-width:760px;margin:0 auto;padding:18px}
+
+/* CATALOGUE */
+.searchbar{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;color:var(--txt);font-family:'DM Sans';font-size:15px;padding:13px 14px;margin-bottom:14px}
+.searchbar::placeholder{color:var(--mut)}
+.searchbar:focus{outline:none;border-color:var(--jade)}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.chip{background:var(--surf2);border:1px solid var(--bdr);color:var(--mut);font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:20px;cursor:pointer;transition:.15s}
+.chip.on{background:var(--jade);border-color:var(--jade);color:#fff}
+.chip:active{transform:scale(.96)}
+
+.card{background:var(--surf);border:1px solid var(--bdr);border-left:4px solid var(--jade);border-radius:10px;padding:16px;margin-bottom:12px;cursor:pointer;transition:.15s}
+.card:active{transform:scale(.99)}
+.card.soon{border-left-color:var(--mut);opacity:.55;cursor:default}
+.card .ctop{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.card h3{font-size:21px;color:var(--txt);flex:1;min-width:60%}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;letter-spacing:.5px;font-family:'DM Sans';text-transform:uppercase}
+.b-mer{background:#e1f5ee;color:var(--jade);border:1px solid #bfe6d9}
+.b-zone{background:var(--surf2);color:var(--mut);border:1px solid var(--bdr)}
+.b-soon{background:rgba(107,107,120,.15);color:var(--mut);border:1px solid var(--bdr)}
+.card .cdesc{font-size:13.5px;color:var(--mut)}
+.card .arrow{color:var(--jade);font-size:18px}
+.empty{color:var(--mut);text-align:center;padding:30px;font-size:14px}
+
+/* DETAIL */
+.detail{display:none}
+.dhero{margin-bottom:16px}
+.dhero h2{font-size:30px;line-height:1.05;margin-bottom:8px}
+.dhero .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.dhero .region{font-size:13.5px;color:var(--mut)}
+
+.sec{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.sec>.sh{display:flex;align-items:center;gap:9px;padding:14px 16px;cursor:pointer;user-select:none}
+.sec>.sh .ico{font-size:17px}
+.sec>.sh h3{font-size:19px;flex:1}
+.sec>.sh .tog{color:var(--mut);font-size:14px;transition:.2s}
+.sec.open>.sh .tog{transform:rotate(90deg);color:var(--jade)}
+.sec>.body{display:none;padding:0 16px 16px}
+.sec.open>.body{display:block}
+
+.lead{font-size:14px;color:var(--txt);background:var(--surf2);border-left:3px solid var(--jade);border-radius:0 8px 8px 0;padding:11px 13px;margin-bottom:13px}
+.kv{margin-bottom:9px}
+.kv b{color:var(--jade);font-weight:700;font-size:13px}
+.kv span{color:var(--txt);font-size:13.5px}
+.note{font-size:12.5px;color:var(--mut)}
+
+/* POINT CARDS */
+.pt{background:var(--surf2);border:1px solid var(--bdr);border-radius:9px;padding:13px;margin-bottom:11px}
+.grp{font-family:'Bebas Neue';font-size:16px;letter-spacing:1px;color:var(--jade);margin:14px 0 8px;border-bottom:1px solid var(--bdr);padding-bottom:4px}
+.grp.comp{color:var(--acc2)}
+.pt .ph{display:flex;align-items:baseline;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.pt .code{font-family:'Bebas Neue';font-size:25px;color:var(--jade);letter-spacing:1px;line-height:1}
+.pt .py{font-size:14px;font-weight:700;color:var(--txt)}
+.pt .cn{font-size:13px;color:var(--mut)}
+.pt .type{width:100%;font-size:11px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.prow{display:flex;gap:8px;margin-bottom:7px;font-size:13px}
+.prow .lbl{flex:0 0 86px;color:var(--mut);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.5px;padding-top:2px}
+.prow .val{flex:1;color:var(--txt)}
+.prow.tip .val{color:var(--acc)}
+.prow.fn .val{color:var(--txt)}
+
+/* TECH TABLE */
+.tech{background:var(--surf2);border:1px solid var(--bdr);border-radius:9px;padding:12px;margin-bottom:10px}
+.tech .tn{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.tech .tn b{font-size:15px;color:var(--jade)}
+.tech .tn .cn{font-size:12px;color:var(--mut)}
+.tech .desc{font-size:13px;color:var(--txt);margin-bottom:5px}
+.tech .meta{font-size:11.5px;color:var(--mut)}
+.tech .meta b{color:var(--acc);font-weight:700}
+
+/* STEPS */
+.step{display:flex;gap:11px;margin-bottom:10px}
+.step .num{flex:0 0 26px;height:26px;border-radius:50%;background:var(--jade);color:#fff;font-family:'Bebas Neue';font-size:16px;display:flex;align-items:center;justify-content:center}
+.step .st{flex:1;font-size:13.5px;padding-top:3px}
+.step .st b{color:var(--jade)}
+
+.warnbox{background:#faece7;border:1px solid #e8c4b6;border-radius:9px;padding:12px;margin-bottom:10px}
+.warnbox .wt{color:var(--acc2);font-weight:700;font-size:13px;margin-bottom:6px}
+.warnbox ul{list-style:none;font-size:13px}
+.warnbox li{padding-left:16px;position:relative;margin-bottom:5px}
+.warnbox li:before{content:"▸";position:absolute;left:0;color:var(--acc2)}
+
+ul.clean{list-style:none}
+ul.clean li{padding-left:16px;position:relative;margin-bottom:6px;font-size:13.5px}
+ul.clean li:before{content:"▸";position:absolute;left:0;color:var(--jade)}
+
+/* SVG */
+.svgwrap{background:var(--surf2);border:1px solid var(--bdr);border-radius:9px;padding:14px;text-align:center;margin-bottom:10px}
+.svgbox{background:#ffffff;border-radius:8px;padding:12px 6px;width:100%}
+.schemaImg{position:relative;max-width:380px;margin:0 auto}
+.schemaImg img{display:block;width:100%;height:auto;border-radius:6px}
+.schemaImg .ovl{position:absolute;top:0;left:0;right:0;bottom:0}
+.schemaImg .ovl svg{position:absolute;top:0;left:0;width:100%;height:100%;max-width:none}
+.svgwrap svg{max-width:360px;width:100%;height:auto}
+.svgcap{font-size:11.5px;color:var(--mut);margin-top:8px;font-style:italic}
+.svgInfo{margin-top:10px;background:var(--surf);border:1px solid var(--bdr);border-left:3px solid var(--acc);border-radius:8px;padding:11px 13px;text-align:left;min-height:48px}
+.svgInfo .pi-h{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.svgInfo .pi-code{font-family:'Bebas Neue';font-size:21px;color:var(--acc);letter-spacing:1px;line-height:1}
+.svgInfo .pi-py{font-size:13.5px;font-weight:700;color:var(--txt)}
+.svgInfo .pi-row{font-size:12.5px;color:var(--txt);margin-top:4px}
+.svgInfo .pi-row b{color:var(--jade);text-transform:uppercase;font-size:10px;letter-spacing:.5px;margin-right:4px}
+.svgInfo .pi-row.tip{color:var(--acc)}
+.svgInfo .pi-hint{color:var(--mut);font-size:12.5px;font-style:italic}
+
+footer{text-align:center;color:var(--mut);font-size:11px;padding:24px 18px 40px;line-height:1.7}
+.disc{background:var(--surf);border:1px solid var(--bdr);border-radius:9px;padding:12px;font-size:11.5px;color:var(--mut);margin-bottom:14px;line-height:1.6}
+.disc b{color:var(--warn)}
+
+.el-bois{background:#e1f5ee;color:#0f6e56;border:1px solid #bfe6d9}
+.el-feu{background:#faece7;color:#993c1d;border:1px solid #e8c4b6}
+.el-terre{background:#faeeda;color:#854f0b;border:1px solid #ecd3a8}
+.el-metal{background:#eef1f4;color:#5a6470;border:1px solid #d4dae1}
+.el-eau{background:#e7eefb;color:#2b4a7a;border:1px solid #c2d3f0}
+.el-extra{background:#eeedfe;color:#6d3bbf;border:1px solid #d6d2f7}
+</style>
+</head>
+<body>
+<header>
+  <div class="accentbar"></div>
+  <div class="logo">MTC · MÉRIDIENS<span class="sub">Trajets · Points-command · Horloge</span></div>
+  <button class="backbtn" id="backBtn" onclick="showCatalogue()">← Retour</button>
+</header>
+
+<div class="wrap">
+  <div id="catalogue">
+    <div class="disc">☯ <b>Référence d'apprentissage</b> personnelle (14 méridiens principaux). Synthèse pédagogique — à recouper avec ton référentiel de formation. Ne remplace pas un avis médical.</div>
+    <input class="searchbar" id="search" placeholder="Rechercher un méridien, un organe, un élément…" oninput="renderCatalogue()">
+    <div class="filters" id="elFilters"></div>
+    <div id="cardList"></div>
+  </div>
+  <div id="detail" class="detail"></div>
+</div>
+
+<footer>Construit sur mesure · Données locales · Aucune pub<br>LV's Tools · Univers MTC</footer>
+
+<script>
+const MERIDIENS=[
+ {id:"poumon",nom:"Poumon",code:"P",py:"Tai Yin de la main",elem:"Métal",elClass:"el-metal",elColor:"#5a6470",yy:"Yin",couple:"Gros Intestin (GI)",horaire:"3h–5h",nbpts:11,
+  resume:"Souffle, peau, défense",
+  trajet:"Du thorax (1P) au bord radial du pouce (11P). Face antéro-externe du bras.",
+  cmd:{source:"9P",luo:"7P",xi:"6P",he:"5P",ting:"11P",mu:"1P",shu:"13V"},
+  indic:"Voies respiratoires, gorge, peau et défense (Wei Qi), nez. Maître des Qi. Émotion : tristesse / deuil."},
+ {id:"gi",nom:"Gros Intestin",code:"GI",py:"Yang Ming de la main",elem:"Métal",elClass:"el-metal",elColor:"#5a6470",yy:"Yang",couple:"Poumon (P)",horaire:"5h–7h",nbpts:20,
+  resume:"Visage, transit, Vent",
+  trajet:"Du bout de l'index (1GI) à l'aile du nez controlatérale (20GI). Face externe du bras, épaule, visage.",
+  cmd:{source:"4GI",luo:"6GI",xi:"7GI",he:"11GI",ting:"1GI",mu:"25E",shu:"25V"},
+  indic:"Visage, dents, nez, gorge ; transit intestinal ; libère l'Extérieur (Vent-Chaleur). Douleurs bras / épaule. 4GI = grand point antalgique."},
+ {id:"estomac",nom:"Estomac",code:"E",py:"Yang Ming du pied",elem:"Terre",elClass:"el-terre",elColor:"#854f0b",yy:"Yang",couple:"Rate (Rte)",horaire:"7h–9h",nbpts:45,
+  resume:"Digestion, énergie acquise",
+  trajet:"Sous l'œil (1E) au 2e orteil (45E). Visage, thorax, abdomen, face antérieure de la jambe.",
+  cmd:{source:"42E",luo:"40E",xi:"34E",he:"36E",ting:"45E",mu:"12RM",shu:"21V"},
+  indic:"Réception des aliments, visage, sein, estomac ; jambe antérieure. 36E = grand point d'énergie et de tonification. Émotion : anxiété / rumination."},
+ {id:"rate",nom:"Rate",code:"Rte",py:"Tai Yin du pied",elem:"Terre",elClass:"el-terre",elColor:"#854f0b",yy:"Yin",couple:"Estomac (E)",horaire:"9h–11h",nbpts:21,
+  resume:"Transformation, Sang, Humidité",
+  trajet:"Du gros orteil (1Rte) au thorax / flanc (21Rte). Face interne de la jambe, abdomen.",
+  cmd:{source:"3Rte",luo:"4Rte",xi:"8Rte",he:"9Rte",ting:"1Rte",mu:"13F",shu:"20V"},
+  indic:"Transformation-transport (digestion), tient le Sang dans les vaisseaux, muscles / chair, gère l'Humidité. Émotion : soucis / réflexion excessive."},
+ {id:"coeur",nom:"Cœur",code:"C",py:"Shao Yin de la main",elem:"Feu",elClass:"el-feu",elColor:"#993c1d",yy:"Yin",couple:"Intestin Grêle (IG)",horaire:"11h–13h",nbpts:9,
+  resume:"Shen, sommeil, circulation",
+  trajet:"De l'aisselle (1C) au bord interne de l'auriculaire (9C). Face interne du bras.",
+  cmd:{source:"7C",luo:"5C",xi:"6C",he:"3C",ting:"9C",mu:"14RM",shu:"15V"},
+  indic:"Abrite le Shen (esprit, sommeil, conscience), gouverne le Sang et les vaisseaux, s'ouvre à la langue, contrôle la sueur. Émotion : joie (excès)."},
+ {id:"ig",nom:"Intestin Grêle",code:"IG",py:"Tai Yang de la main",elem:"Feu",elClass:"el-feu",elColor:"#993c1d",yy:"Yang",couple:"Cœur (C)",horaire:"13h–15h",nbpts:19,
+  resume:"Assimilation, nuque / épaule",
+  trajet:"De l'auriculaire (1IG) à l'avant de l'oreille (19IG). Bord ulnaire du bras, scapula, nuque, joue.",
+  cmd:{source:"4IG",luo:"7IG",xi:"6IG",he:"8IG",ting:"1IG",mu:"4RM",shu:"27V"},
+  indic:"Tri du clair et du trouble (assimilation), nuque / épaule / omoplate, oreille. Cervicalgies, torticolis. 3IG = ouverture du Du Mai."},
+ {id:"vessie",nom:"Vessie",code:"V",py:"Tai Yang du pied",elem:"Eau",elClass:"el-eau",elColor:"#2b4a7a",yy:"Yang",couple:"Rein (Rn)",horaire:"15h–17h",nbpts:67,
+  resume:"Dos, points Shu, élimination",
+  trajet:"De l'angle interne de l'œil (1V) au petit orteil (67V). Sommet du crâne, 2 chaînes le long du dos, face postérieure de la jambe.",
+  cmd:{source:"64V",luo:"58V",xi:"63V",he:"40V",ting:"67V",mu:"3RM",shu:"28V"},
+  indic:"Porte les points Shu du dos (tous les organes), tête / nuque, yeux, jambe postérieure, élimination de l'eau. Le plus long méridien. Émotion : peur."},
+ {id:"rein",nom:"Rein",code:"Rn",py:"Shao Yin du pied",elem:"Eau",elClass:"el-eau",elColor:"#2b4a7a",yy:"Yin",couple:"Vessie (V)",horaire:"17h–19h",nbpts:27,
+  resume:"Essence, os, lombes",
+  trajet:"De la plante du pied (1Rn) au thorax sous la clavicule (27Rn). Face interne de la jambe, abdomen, thorax.",
+  cmd:{source:"3Rn",luo:"4Rn",xi:"5Rn",he:"10Rn",ting:"1Rn",mu:"25VB",shu:"23V"},
+  indic:"Stocke l'Essence (Jing), gouverne os et moelle, lombes, oreille, croissance / reproduction, eau. Racine du Yin et du Yang. Émotion : peur."},
+ {id:"mc",nom:"Maître du Cœur",code:"MC",py:"Jue Yin de la main",elem:"Feu",elClass:"el-feu",elColor:"#993c1d",yy:"Yin",couple:"Triple Réchauffeur (TR)",horaire:"19h–21h",nbpts:9,
+  resume:"Protège le Cœur, thorax",
+  trajet:"Du thorax (1MC) au bout du majeur (9MC). Milieu de la face interne du bras.",
+  cmd:{source:"7MC",luo:"6MC",xi:"4MC",he:"3MC",ting:"9MC",mu:"17RM",shu:"14V"},
+  indic:"Enveloppe et protège le Cœur, thorax, Shen, palpitations / anxiété, nausées. 6MC = mal des transports, estomac, ouverture du Yin Wei."},
+ {id:"tr",nom:"Triple Réchauffeur",code:"TR",py:"Shao Yang de la main",elem:"Feu",elClass:"el-feu",elColor:"#993c1d",yy:"Yang",couple:"Maître du Cœur (MC)",horaire:"21h–23h",nbpts:23,
+  resume:"3 foyers, eaux, défense",
+  trajet:"De l'annulaire (1TR) à l'extrémité du sourcil / tempe (23TR). Face externe du bras, épaule, côté de la tête.",
+  cmd:{source:"4TR",luo:"5TR",xi:"7TR",he:"10TR",ting:"1TR",mu:"5RM",shu:"22V"},
+  indic:"Régule les trois foyers et les voies de l'eau, défense, oreille / tempe, faces latérales du corps. 5TR = ouverture du Yang Wei."},
+ {id:"vb",nom:"Vésicule Biliaire",code:"VB",py:"Shao Yang du pied",elem:"Bois",elClass:"el-bois",elColor:"#0f6e56",yy:"Yang",couple:"Foie (F)",horaire:"23h–1h",nbpts:44,
+  resume:"Décision, latéral, tendons",
+  trajet:"De l'angle externe de l'œil (1VB) au 4e orteil (44VB). Côtés de la tête, flanc, face latérale de la jambe.",
+  cmd:{source:"40VB",luo:"37VB",xi:"36VB",he:"34VB",ting:"44VB",mu:"24VB",shu:"19V"},
+  indic:"Décision / courage, faces latérales (migraines), tendons : 34VB = Hui de réunion des tendons, digestion des graisses. Émotion : indécision."},
+ {id:"foie",nom:"Foie",code:"F",py:"Jue Yin du pied",elem:"Bois",elClass:"el-bois",elColor:"#0f6e56",yy:"Yin",couple:"Vésicule Biliaire (VB)",horaire:"1h–3h",nbpts:14,
+  resume:"Circulation du Qi, tendons, yeux",
+  trajet:"Du gros orteil (1F) au thorax / hypochondre (14F). Face interne de la jambe, organes génitaux, hypochondre.",
+  cmd:{source:"3F",luo:"5F",xi:"6F",he:"8F",ting:"1F",mu:"14F",shu:"18V"},
+  indic:"Assure la libre circulation du Qi, gouverne les tendons, s'ouvre aux yeux, régularise les règles, stocke le Sang. 3F = grand point de régulation. Émotion : colère / frustration."},
+ {id:"dm",nom:"Du Mai",code:"DM",py:"Vaisseau Gouverneur",elem:"Extraordinaire",elClass:"el-extra",elColor:"#6d3bbf",yy:"Yang",couple:"Mer des Yang",horaire:"—",nbpts:28,
+  resume:"Mer des Yang, colonne",
+  trajet:"Ligne médiane postérieure : du périnée / coccyx (1DM) à la lèvre supérieure / gencive (28DM), en passant par la colonne et le sommet du crâne.",
+  luo:"1DM (changqiang)",
+  keypts:"Points-clés : 4DM (mingmen, feu du Rein) · 14DM (dazhui, réunion de tous les Yang) · 20DM (baihui, sommet) · 26DM (renzhong, réanimation).",
+  ouverture:"Point d'ouverture : 3IG (couplé à 62V).",
+  indic:"Mer des Yang : tonifie et réchauffe le Yang, gouverne colonne et cerveau (moelle), fièvres, états de conscience, esprit."},
+ {id:"rm",nom:"Ren Mai",code:"RM",py:"Vaisseau Conception",elem:"Extraordinaire",elClass:"el-extra",elColor:"#6d3bbf",yy:"Yin",couple:"Mer des Yin",horaire:"—",nbpts:24,
+  resume:"Mer des Yin, abdomen",
+  trajet:"Ligne médiane antérieure : du périnée (1RM) au menton / sous la lèvre inférieure (24RM), en passant par l'abdomen et le thorax.",
+  luo:"15RM (jiuwei)",
+  keypts:"Points-clés : 4RM (guanyuan, racine du Qi) · 6RM (qihai, mer du Qi) · 12RM (zhongwan, Mu de l'Estomac) · 17RM (danzhong, Mu du MC).",
+  ouverture:"Point d'ouverture : 7P (couplé à 6Rn).",
+  indic:"Mer des Yin : nourrit Yin, Sang et essence, abdomen et utérus, fertilité, racine du Qi acquis."}
+];
+
+const ELS=["Tous","Bois","Feu","Terre","Métal","Eau","Extraordinaire"];
+let activeEl="Tous";
+function buildElFilters(){
+  document.getElementById("elFilters").innerHTML=ELS.map(e=>`<span class="chip ${e===activeEl?'on':''}" onclick="setEl('${e}')">${e}</span>`).join("");
+}
+function setEl(e){activeEl=e;buildElFilters();renderCatalogue();}
+
+function renderCatalogue(){
+  const q=document.getElementById("search").value.toLowerCase().trim();
+  const list=MERIDIENS.filter(m=>{
+    if(activeEl!=="Tous"&&m.elem!==activeEl)return false;
+    if(!q)return true;
+    const hay=(m.nom+" "+m.code+" "+m.elem+" "+m.py+" "+m.resume+" "+m.indic).toLowerCase();
+    return hay.includes(q);
+  });
+  const el=document.getElementById("cardList");
+  if(!list.length){el.innerHTML='<div class="empty">Aucun méridien trouvé.</div>';return;}
+  el.innerHTML=list.map(m=>`<div class="card" style="border-left:3px solid ${m.elColor}" onclick="showDetail('${m.id}')">
+      <div class="ctop"><h3>${m.nom} <span style="color:var(--mut);font-weight:500;font-size:15px">${m.code}</span></h3>
+        <span class="badge ${m.elClass}">${m.elem}</span><span class="badge b-zone">${m.yy}</span></div>
+      <div class="cdesc">${m.resume}${m.horaire!=="—"?" · "+m.horaire:""} · ${m.nbpts} points</div>
+      <div style="text-align:right" class="arrow">→</div>
+    </div>`).join("");
+}
+
+function sec(ico,title,bodyHTML,open){
+  return `<div class="sec ${open?'open':''}">
+    <div class="sh" onclick="this.parentNode.classList.toggle('open')">
+      <span class="ico">${ico}</span><h3>${title}</h3><span class="tog">▶</span>
+    </div>
+    <div class="body">${bodyHTML}</div>
+  </div>`;
+}
+
+function showDetail(id){
+  const m=MERIDIENS.find(x=>x.id===id); if(!m)return;
+  let body="";
+  const idn=`
+    <div class="kv"><b>Élément</b> <span>${m.elem}${m.elem!=="Extraordinaire"?" (5 mouvements)":" (vaisseau merveilleux)"}</span></div>
+    <div class="kv"><b>Polarité</b> <span>${m.yy}</span></div>
+    <div class="kv"><b>${m.elem==="Extraordinaire"?"Rôle":"Couplage interne–externe"}</b> <span>${m.couple}</span></div>
+    <div class="kv"><b>Horaire (horloge des organes)</b> <span>${m.horaire==="—"?"— (hors cycle des 12 organes)":m.horaire}</span></div>
+    <div class="kv"><b>Nombre de points</b> <span>${m.nbpts}</span></div>`;
+  body+=sec("🧭","Identité",idn,true);
+  body+=sec("🧵","Trajet",`<div class="lead">${m.trajet}</div>`,true);
+  if(m.cmd){
+    const rows=[
+      ["Source (Yuan)",m.cmd.source,"Mobilise l'énergie de l'organe / méridien."],
+      ["Luo (passage)",m.cmd.luo,"Relie au méridien couplé."],
+      ["Xi (fente)",m.cmd.xi,"Douleurs aiguës, saignements."],
+      ["He-Mer (mer)",m.cmd.he,"Le Qi y plonge ; troubles du Fu / organe."],
+      ["Ting (puits)",m.cmd.ting,"Extrémité ; urgences, plénitude du thorax."],
+      ["Mu (héraut)",m.cmd.mu,"Point d'alarme ventral de l'organe."],
+      ["Shu du dos",m.cmd.shu,"Point d'assentiment dorsal (sur la Vessie)."]
+    ].map(r=>`<div class="pt"><div class="ph"><span class="code" style="font-size:17px">${r[1]}</span><span class="py">${r[0]}</span></div><div class="prow"><span class="val">${r[2]}</span></div></div>`).join("");
+    body+=sec("📍","Points-command",rows,false);
+  } else {
+    const ex=`<div class="kv"><b>Luo</b> <span>${m.luo}</span></div>
+      <div class="lead" style="margin-top:8px">${m.keypts}</div>
+      <div class="kv" style="margin-top:8px"><b>Clé d'ouverture</b> <span>${m.ouverture.replace('Point d\'ouverture : ','')}</span></div>`;
+    body+=sec("📍","Points clés",ex,false);
+  }
+  body+=sec("🎯","Indications principales",`<div class="lead">${m.indic}</div>`,false);
+
+  document.getElementById("detail").innerHTML=`
+    <div class="dhero">
+      <h2>${m.nom} <span style="font-size:18px;color:var(--mut)">${m.code}</span></h2>
+      <div class="tags"><span class="badge ${m.elClass}">${m.elem}</span><span class="badge b-zone">${m.yy}</span>${m.horaire!=="—"?`<span class="badge b-zone">${m.horaire}</span>`:""}</div>
+      <div class="region">${m.py}</div>
+    </div>
+    ${body}`;
+  document.getElementById("catalogue").style.display="none";
+  document.getElementById("detail").style.display="block";
+  document.getElementById("backBtn").style.display="block";
+  window.scrollTo(0,0);
+}
+function showCatalogue(){
+  document.getElementById("detail").style.display="none";
+  document.getElementById("catalogue").style.display="block";
+  document.getElementById("backBtn").style.display="none";
+  window.scrollTo(0,0);
+}
+buildElFilters();
+renderCatalogue();
+</script>
+</body>
+</html>
